@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Demo Eatery — Web Chat (WhatsApp fallback)</title>
+<style>body{font-family:system-ui;max-width:560px;margin:auto;padding:16px}#log{border:1px solid #ddd;border-radius:8px;padding:12px;height:380px;overflow:auto;margin-bottom:12px}.me{text-align:right;margin:6px}.bot{background:#f1f5f9;border-radius:8px;padding:8px;margin:6px}#row{display:flex;gap:8px}input{flex:1;padding:10px;border:1px solid #ccc;border-radius:8px}button{padding:10px 16px}</style>
+</head><body>
+<h2>Demo Eatery — order hapa (MVP)</h2>
+<p>Jaribu: <i>niaje, menu?</i> → <i>pilau x2 na soda</i> → <i>NDIO 0712345678</i> → <i>nimesalipa</i></p>
+<div id="log"></div>
+<div id="row"><input id="msg" placeholder="Andika ujumbe..."><button onclick="send()">Tuma</button></div>
+<script>
+const sender = "web-" + Math.floor(Math.random()*100000);
+const log = document.getElementById('log');
+function add(cls, t){ const d=document.createElement('div'); d.className=cls; d.textContent=t; log.appendChild(d); log.scrollTop=log.scrollHeight; }
+async function send(){
+  const inp = document.getElementById('msg'); const text = inp.value.trim(); if(!text) return;
+  inp.value=''; add('me', text);
+  const m = text.match(/254\d{9}|0[17]\d{8}/); 
+  const r = await fetch('/conversations/message',{method:'POST',headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({sender, text, phone: m?m[0]:undefined})});
+  const j = await r.json(); add('bot', j.reply || JSON.stringify(j));
+}
+document.getElementById('msg').addEventListener('keydown', e=>{ if(e.key==='Enter') send(); });
+add('bot','Karibu Demo Eatery! Andika "menu" kuona vyakula.');
+</script>
+</body></html>
