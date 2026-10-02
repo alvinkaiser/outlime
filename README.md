@@ -1,4 +1,4 @@
-# AI Agents KE — Restaurant MVP (Phase 1 spike)
+# Restaurant Agent (Phase 1 spike)
 
 PRD v0.1 → Phase 0 discovery in `docs/discovery/` (+ `preview.html` bundle).
 Phase 1 MVP loop: inquiry → quote → M-Pesa STK Push → confirmation, on WhatsApp with handoff. Web-chat fallback included.
